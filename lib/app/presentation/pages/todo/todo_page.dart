@@ -10,7 +10,7 @@ import 'package:todo_list/app/presentation/widgets/input/input/input.dart';
 class TodoPage extends StatelessWidget with TodoPageStyles {
   final int todoId;
 
-  const TodoPage({Key key, this.todoId}) : super(key: key);
+  TodoPage({Key key, this.todoId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
