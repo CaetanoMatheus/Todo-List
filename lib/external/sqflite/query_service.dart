@@ -9,9 +9,12 @@ class QueryService {
     this._service = DatabaseService.instance;
   }
 
-  Future<List<Map<String, dynamic>>> all(String table) async {
+  Future<List<Map<String, dynamic>>> all(String table,
+      [String field, dynamic value]) async {
     Database database = await this._service.database;
-    return await database.query(table);
+    return value != null
+        ? await database.query(table, where: '$field = ?', whereArgs: [value])
+        : await database.query(table);
   }
 
   Future<Map<String, dynamic>> find(

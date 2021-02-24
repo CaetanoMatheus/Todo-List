@@ -28,17 +28,15 @@ class TodoDataSource implements ITodoDataSource {
 
   @override
   Future<TodoModel> create(TodoModel todo) async {
-    todo.id = await this
-        ._service
-        .create(this._tableName, this.convertFieldToInsert(todo));
+    todo.id =
+        await this._service.create(this._tableName, convertFieldToInsert(todo));
     return todo;
   }
 
   @override
   Future<bool> update(TodoModel todo) async {
-    final result = await this
-        ._service
-        .update(this._tableName, this.convertFieldToInsert(todo));
+    final result =
+        await this._service.update(this._tableName, convertFieldToInsert(todo));
     return result > 0;
   }
 
@@ -47,11 +45,11 @@ class TodoDataSource implements ITodoDataSource {
     return await this._service.destroy(this._tableName, id) > 0;
   }
 
-  Map<String, dynamic> convertFieldToInsert(TodoModel todo) {
+  static Map<String, dynamic> convertFieldToInsert(TodoModel todo) {
     return {...todo.toJson(), 'done': converter.boolToInt(todo.done)};
   }
 
-  Map<String, dynamic> convertFieldToRead(Map<String, dynamic> todo) {
+  static Map<String, dynamic> convertFieldToRead(Map<String, dynamic> todo) {
     return {...todo, 'done': converter.intToBool(todo['done'])};
   }
 }
