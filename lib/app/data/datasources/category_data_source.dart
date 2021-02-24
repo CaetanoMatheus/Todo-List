@@ -2,13 +2,13 @@ import 'package:todo_list/app/data/datasources/todo_data_source.dart';
 import 'package:todo_list/app/data/models/category_model.dart';
 import 'package:todo_list/app/data/models/todo_model.dart';
 import 'package:todo_list/external/sqflite/query_service.dart';
-import 'package:todo_list/utils/type_converter.dart' as converter;
 
 import 'contracts/i_category_data_source.dart';
 
 class CategoryDataSource implements ICategoryDataSource {
   final String _tableName = 'categories';
   final String _todosTableName = 'todos';
+  final List<String> _removeOnPersist = ['todos'];
 
   QueryService _service;
 
@@ -53,20 +53,30 @@ class CategoryDataSource implements ICategoryDataSource {
 
   @override
   Future<CategoryModel> create(CategoryModel category) async {
-    category.id =
-        await this._service.create(this._tableName, category.toJson());
+    category.id = await this._service.create(
+          this._tableName,
+          this._removeFieldsToPersist(category),
+        );
     return category;
   }
 
   @override
   Future<bool> update(CategoryModel category) async {
-    final result =
-        await this._service.update(this._tableName, category.toJson());
+    final result = await this._service.update(
+          this._tableName,
+          this._removeFieldsToPersist(category),
+        );
     return result > 0;
   }
 
   @override
   Future<bool> delete(int id) async {
     return await this._service.destroy(this._tableName, id) > 0;
+  }
+
+  Map<String, dynamic> _removeFieldsToPersist(CategoryModel category) {
+    final map = category.toJson();
+    this._removeOnPersist.forEach((String key) => map.remove(key));
+    return map;
   }
 }

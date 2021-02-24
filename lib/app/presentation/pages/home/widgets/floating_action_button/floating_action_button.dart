@@ -53,7 +53,10 @@ class HomeFloatingActionButton extends StatelessWidget {
     return ListTile(
       leading: Icon(icon, color: TLColors.color(TLColors.label)),
       title: Text(title),
-      onTap: () => Navigator.pushNamed(context, route),
+      onTap: () {
+        Navigator.pop(context);
+        Navigator.pushNamed(context, route);
+      },
     );
   }
 }

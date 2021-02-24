@@ -11,17 +11,17 @@ import 'package:todo_list/router/routes.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomePageProvider>(
-      builder: (__, HomePageProvider provider, _) => FutureBuilder(
-        future: provider(),
-        builder: (_, AsyncSnapshot<void> snapshot) {
-          return Scaffold(
-            appBar: HomeAppBar(),
-            floatingActionButton: HomeFloatingActionButton(),
-            body: buildTodosList(context, provider),
-          );
-        },
-      ),
+    final provider = Provider.of<HomePageProvider>(context, listen: false);
+
+    return FutureBuilder(
+      future: provider(),
+      builder: (_, AsyncSnapshot<void> snapshot) {
+        return Scaffold(
+          appBar: HomeAppBar(),
+          floatingActionButton: HomeFloatingActionButton(),
+          body: buildTodosList(context, provider),
+        );
+      },
     );
   }
 

@@ -14,15 +14,15 @@ class TodoPage extends StatelessWidget with TodoPageStyles {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TodoPageProvider>(
-      builder: (__, TodoPageProvider provider, _) => FutureBuilder(
-        future: provider(todoId),
-        builder: (_, AsyncSnapshot<void> snapshot) {
-          return snapshot.connectionState == ConnectionState.done
-              ? buildScaffold(context, provider)
-              : Center(child: CircularProgressIndicator());
-        },
-      ),
+    final provider = Provider.of<TodoPageProvider>(context);
+
+    return FutureBuilder(
+      future: provider(todoId),
+      builder: (_, AsyncSnapshot<void> snapshot) {
+        return snapshot.connectionState == ConnectionState.done
+            ? buildScaffold(context, provider)
+            : Center(child: CircularProgressIndicator());
+      },
     );
   }
 

@@ -11,6 +11,7 @@ import 'package:todo_list/app/data/repositories/category_repository.dart';
 import 'package:todo_list/app/data/repositories/todo_repository.dart';
 import 'package:todo_list/app/domain/repositories/i_category_repository.dart';
 import 'package:todo_list/app/domain/repositories/i_todo_repository.dart';
+import 'package:todo_list/app/presentation/providers/pages/category_page_provider.dart';
 import 'package:todo_list/app/presentation/providers/pages/home_page_provider.dart';
 import 'package:todo_list/app/presentation/providers/pages/todo_page_provider.dart';
 import 'package:todo_list/app/presentation/providers/theme_provider.dart';
@@ -54,6 +55,9 @@ List<SingleChildWidget> providers = [
   }),
   ChangeNotifierProvider<HomePageProvider>(create: (_) {
     return HomePageProvider(get<ITodoRepository>());
+  }),
+  ChangeNotifierProvider<CategoryPageProvider>(create: (_) {
+    return CategoryPageProvider(get<ICategoryRepository>());
   }),
   ChangeNotifierProvider<TodoPageProvider>(create: (_) {
     return TodoPageProvider(get<ITodoRepository>());
