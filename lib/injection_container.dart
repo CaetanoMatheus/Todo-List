@@ -30,7 +30,7 @@ Future<void> initDepencies() async {
   });
 
   _getIt.registerFactory<ITodoRepository>(() {
-    return TodoRepository(_getIt());
+    return TodoRepository(_getIt(), _getIt());
   });
 
   //! Data - Data Sources
@@ -54,7 +54,7 @@ List<SingleChildWidget> providers = [
     return ThemeProvider.instance(get<SharedPreferences>());
   }),
   ChangeNotifierProvider<HomePageProvider>(create: (_) {
-    return HomePageProvider(get<ITodoRepository>());
+    return HomePageProvider(get<ICategoryRepository>(), get<ITodoRepository>());
   }),
   ChangeNotifierProvider<CategoryPageProvider>(create: (_) {
     return CategoryPageProvider(get<ICategoryRepository>());

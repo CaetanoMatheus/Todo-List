@@ -1,5 +1,6 @@
 import 'package:todo_list/app/data/datasources/contracts/i_category_data_source.dart';
-import 'package:todo_list/app/data/models/category_model.dart';
+import 'package:todo_list/app/data/models/category.dart';
+import 'package:todo_list/app/data/models/todo.dart';
 import 'package:todo_list/app/domain/repositories/i_category_repository.dart';
 
 class CategoryRepository implements ICategoryRepository {
@@ -10,21 +11,24 @@ class CategoryRepository implements ICategoryRepository {
   }
 
   @override
-  Future<List<CategoryModel>> all() => this._datasource.all();
+  Future<List<Category>> all() => this._datasource.all();
 
   @override
-  Future<CategoryModel> find(int id) => this._datasource.find(id);
+  Future<Category> find(int id) => this._datasource.find(id);
 
   @override
-  Future<CategoryModel> create(CategoryModel category) {
+  Future<Category> create(Category category) {
     return this._datasource.create(category);
   }
 
   @override
-  Future<bool> update(CategoryModel category) {
+  Future<bool> update(Category category) {
     return this._datasource.update(category);
   }
 
   @override
   Future<bool> delete(int id) => this._datasource.delete(id);
+
+  @override
+  Future<Category> findByTodo(Todo todo) => this._datasource.findByTodo(todo);
 }

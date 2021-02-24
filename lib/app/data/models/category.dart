@@ -1,5 +1,9 @@
-import 'package:todo_list/app/domain/entities/todo.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:todo_list/app/data/models/todo.dart';
 
+part 'category.g.dart';
+
+@JsonSerializable()
 class Category {
   int _id;
   String _name, _color;
@@ -11,6 +15,11 @@ class Category {
     this.color = color;
     this.todos = todos;
   }
+
+  factory Category.fromJson(Map<String, dynamic> json) =>
+      _$CategoryFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CategoryToJson(this);
 
   void addTodo(Todo todo) {
     if (this.todos == null)

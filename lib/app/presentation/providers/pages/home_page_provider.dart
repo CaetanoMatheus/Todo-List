@@ -1,30 +1,40 @@
 import 'package:flutter/cupertino.dart';
+import 'package:todo_list/app/data/models/category.dart';
 
-import 'package:todo_list/app/data/models/todo_model.dart';
+import 'package:todo_list/app/data/models/todo.dart';
+import 'package:todo_list/app/domain/repositories/i_category_repository.dart';
 import 'package:todo_list/app/domain/repositories/i_todo_repository.dart';
 
 class HomePageProvider extends ChangeNotifier {
-  ITodoRepository repository;
-  List<TodoModel> todos = [];
+  ICategoryRepository categoryRepository;
+  ITodoRepository todoRepository;
+  List<Category> categories = [];
+  List<Todo> todos = [];
 
-  HomePageProvider(this.repository);
+  HomePageProvider(this.categoryRepository, this.todoRepository);
 
-  Future<void> call() async => await this.getTodos();
+  Future<void> call() async {
+    await this.getCategories();
+    await this.getTodos();
+  }
+
+  Future<void> getCategories() async {
+    this.categories = await this.categoryRepository.all();
+  }
 
   Future<void> getTodos() async {
-    this.todos = await this.repository.all();
-    this.notifyListeners();
+    this.todos = await this.todoRepository.all();
   }
 
-  Future<void> toggleTodoCheck(TodoModel todo) async {
+  Future<void> toggleTodoCheck(Todo todo) async {
     todo.done = !todo.done;
-    await this.repository.update(todo);
+    await this.todoRepository.update(todo);
     this.notifyListeners();
   }
 
-  Future<void> deleteTodo(TodoModel todo) async {
+  Future<void> deleteTodo(Todo todo) async {
     this.todos.remove(todo);
-    await this.repository.delete(todo.id);
+    await this.todoRepository.delete(todo.id);
     this.notifyListeners();
   }
 }

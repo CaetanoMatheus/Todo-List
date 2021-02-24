@@ -14,7 +14,7 @@ abstract class ColorsHex {
     'FFFF00', // yellow
     'FFEB3B', // lightYellow
     'F9A825', // darkYellow
-    'eF6C00', // orange
+    'EF6C00', // orange
     'FFA726', // lightOrange
     'E65100', // darkOrange
     'D50000', // red

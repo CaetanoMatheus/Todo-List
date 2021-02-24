@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:todo_list/app/data/models/todo_model.dart';
+import 'package:todo_list/app/data/models/todo.dart';
 import 'package:todo_list/app/domain/repositories/i_todo_repository.dart';
 
 enum PageAction { create, update }
@@ -9,7 +9,7 @@ class TodoPageProvider extends ChangeNotifier {
   final ITodoRepository repository;
   final formKey = GlobalKey<FormState>();
 
-  TodoModel todo;
+  Todo todo;
   PageAction pageAction;
 
   TodoPageProvider(this.repository);
@@ -17,7 +17,7 @@ class TodoPageProvider extends ChangeNotifier {
   Future<void> call(int id) async {
     if (id == null) {
       this.pageAction = PageAction.create;
-      this.todo = TodoModel(null, '', null);
+      this.todo = Todo(null, '', null);
     } else {
       this.pageAction = PageAction.update;
       this.todo = await this.repository.find(id);

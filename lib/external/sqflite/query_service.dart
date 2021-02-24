@@ -66,4 +66,12 @@ class QueryService {
       whereArgs: [value],
     );
   }
+
+  Future<List<Map<String, dynamic>>> rawQuery(
+    String sql, [
+    List<dynamic> arguments,
+  ]) async {
+    Database database = await this._service.database;
+    return await database.rawQuery(sql, arguments);
+  }
 }

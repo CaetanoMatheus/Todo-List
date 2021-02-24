@@ -11,7 +11,8 @@ final onDatabaseCreate = {
       CREATE TABLE todos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
-        done INTEGER
+        done INTEGER,
+        category_id INTEGER
       );
     '''
   ]

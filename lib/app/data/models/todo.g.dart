@@ -1,21 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'todo_model.dart';
+part of 'todo.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-TodoModel _$TodoModelFromJson(Map<String, dynamic> json) {
-  return TodoModel(
+Todo _$TodoFromJson(Map<String, dynamic> json) {
+  return Todo(
     json['id'] as int,
     json['title'] as String,
-    json['category'],
+    json['category'] == null
+        ? null
+        : Category.fromJson(json['category'] as Map<String, dynamic>),
     json['done'] as bool,
   );
 }
 
-Map<String, dynamic> _$TodoModelToJson(TodoModel instance) => <String, dynamic>{
+Map<String, dynamic> _$TodoToJson(Todo instance) => <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
       'done': instance.done,

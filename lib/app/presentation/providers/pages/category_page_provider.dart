@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:todo_list/app/data/models/category_model.dart';
+import 'package:todo_list/app/data/models/category.dart';
 import 'package:todo_list/app/domain/repositories/i_category_repository.dart';
 import 'package:todo_list/constants/colors_hex.dart';
 
@@ -11,7 +11,7 @@ class CategoryPageProvider extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
 
   String color = ColorsHex.codes[0];
-  CategoryModel category;
+  Category category;
   CategoryPageAction pageAction;
 
   CategoryPageProvider(this.repository);
@@ -19,7 +19,7 @@ class CategoryPageProvider extends ChangeNotifier {
   Future<void> call(int id) async {
     if (id == null) {
       this.pageAction = CategoryPageAction.create;
-      this.category = CategoryModel(null, '', null);
+      this.category = Category(null, '', null);
     } else {
       this.pageAction = CategoryPageAction.update;
       this.category = await this.repository.find(id);
@@ -58,7 +58,7 @@ class CategoryPageProvider extends ChangeNotifier {
   }
 
   void finish(BuildContext context) {
-    this.category = CategoryModel(null, '', null);
+    this.category = Category(null, '', null);
     this.color = ColorsHex.codes[0];
     Navigator.pop(context);
   }
