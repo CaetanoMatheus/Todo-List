@@ -1,25 +1,23 @@
-import 'dart:convert';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:todo_list/app/data/models/category_model.dart';
 
-import 'package:todo_list/app/domain/entities/category.dart';
 import 'package:todo_list/app/domain/entities/todo.dart';
 
+part 'todo_model.g.dart';
+
+@JsonSerializable()
 class TodoModel extends Todo {
-  TodoModel(int id, String title, Category category, [bool done])
-      : super(id, title, category, done);
+  TodoModel(
+    int id,
+    String title,
+    CategoryModel category, [
+    bool done,
+  ]) : super(id, title, category, done);
 
-  factory TodoModel.fromMap(Map<String, dynamic> map) {
-    return TodoModel(map['id'], map['title'], map['done']);
-  }
+  factory TodoModel.fromJson(Map<String, dynamic> json) =>
+      _$TodoModelFromJson(json);
 
-  factory TodoModel.fromJson(String jsonString) {
-    return TodoModel.fromMap(json.decode(jsonString));
-  }
+  Map<String, dynamic> toJson() => _$TodoModelToJson(this);
 
-  Map<String, dynamic> toMap() {
-    return {'id': this.id, 'title': this.title, 'done': this.done};
-  }
-
-  String toJson() {
-    return json.encode({'id': this.id, 'title': this.title, 'done': this.done});
-  }
+  CategoryModel get category => super.category;
 }

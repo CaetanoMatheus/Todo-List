@@ -16,14 +16,14 @@ class TodoDataSource implements ITodoDataSource {
   Future<List<TodoModel>> all() async {
     final todosMaps = await this._service.all(this._tableName);
     return todosMaps
-        .map((Map todo) => TodoModel.fromMap(convertFieldToRead(todo)))
+        .map((Map todo) => TodoModel.fromJson(convertFieldToRead(todo)))
         .toList();
   }
 
   @override
   Future<TodoModel> find(int id) async {
     final todo = await this._service.find(this._tableName, id);
-    return TodoModel.fromMap(convertFieldToRead(todo));
+    return TodoModel.fromJson(convertFieldToRead(todo));
   }
 
   @override
@@ -48,7 +48,7 @@ class TodoDataSource implements ITodoDataSource {
   }
 
   Map<String, dynamic> convertFieldToInsert(TodoModel todo) {
-    return {...todo.toMap(), 'done': converter.boolToInt(todo.done)};
+    return {...todo.toJson(), 'done': converter.boolToInt(todo.done)};
   }
 
   Map<String, dynamic> convertFieldToRead(Map<String, dynamic> todo) {
