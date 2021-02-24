@@ -17,7 +17,7 @@ class TodoPageProvider extends ChangeNotifier {
   Future<void> call(int id) async {
     if (id == null) {
       this.pageAction = PageAction.create;
-      this.todo = TodoModel(null, '');
+      this.todo = TodoModel(null, '', null);
     } else {
       this.pageAction = PageAction.update;
       this.todo = await this.repository.find(id);
