@@ -10,6 +10,7 @@ class CheckboxCard extends StatelessWidget with CheckboxCardStyles {
   final bool checked;
   final double height;
   final double width;
+  final Color color;
   final EdgeInsets margin;
   final Alignment alignment;
 
@@ -23,6 +24,7 @@ class CheckboxCard extends StatelessWidget with CheckboxCardStyles {
     this.onChange,
     this.checked,
     this.title,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -42,7 +44,11 @@ class CheckboxCard extends StatelessWidget with CheckboxCardStyles {
             children: [
               Padding(
                 padding: checkboxPadding(),
-                child: ColoredCheckbox(isChecked: checked, onTap: onChange),
+                child: ColoredCheckbox(
+                  isChecked: checked,
+                  onTap: onChange,
+                  color: color,
+                ),
               ),
               Flexible(child: Text(title, style: titleStyle(checked))),
             ],

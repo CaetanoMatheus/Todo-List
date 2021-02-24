@@ -19,8 +19,6 @@ class TodoRepository implements ITodoRepository {
     for (var todo in todos) {
       todo.category = await this._categoryRepository.findByTodo(todo);
     }
-    print(todos.first.category);
-
     return todos;
   }
 

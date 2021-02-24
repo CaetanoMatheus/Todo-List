@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_list/app/data/models/category.dart';
 import 'package:todo_list/app/domain/repositories/i_category_repository.dart';
 import 'package:todo_list/constants/colors_hex.dart';
+import 'package:todo_list/router/routes.dart';
 
 enum CategoryPageAction { create, update }
 
@@ -60,6 +61,6 @@ class CategoryPageProvider extends ChangeNotifier {
   void finish(BuildContext context) {
     this.category = Category(null, '', null);
     this.color = ColorsHex.codes[0];
-    Navigator.pop(context);
+    Navigator.pushNamedAndRemoveUntil(context, Routes.home, (_) => false);
   }
 }

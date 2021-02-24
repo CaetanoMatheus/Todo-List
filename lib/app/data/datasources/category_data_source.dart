@@ -47,7 +47,9 @@ class CategoryDataSource implements ICategoryDataSource {
 
   @override
   Future<bool> delete(int id) async {
-    return await this._service.destroy(this._tableName, id) > 0;
+    bool result = await this._service.destroy(this._tableName, id) > 0;
+    if (result) await this._service.destroy('todos', id, 'category_id');
+    return result;
   }
 
   Map<String, dynamic> _removeFieldsToPersist(Category category) {

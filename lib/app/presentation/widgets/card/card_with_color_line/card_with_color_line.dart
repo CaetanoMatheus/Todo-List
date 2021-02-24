@@ -5,6 +5,7 @@ import 'package:todo_list/app/presentation/widgets/text/label/label.dart';
 
 class CardWithColorLine extends StatelessWidget with CardWithColorLineStyles {
   final void Function() onTap;
+  final void Function() onLongPress;
   final double height;
   final double width;
   final EdgeInsets margin;
@@ -23,6 +24,7 @@ class CardWithColorLine extends StatelessWidget with CardWithColorLineStyles {
     this.label,
     this.title,
     this.color,
+    this.onLongPress,
   }) : super(key: key);
 
   @override
@@ -36,6 +38,7 @@ class CardWithColorLine extends StatelessWidget with CardWithColorLineStyles {
         padding: containerPadding(),
         decoration: containerDecoration(),
         child: InkWell(
+          onLongPress: onLongPress,
           onTap: onTap,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

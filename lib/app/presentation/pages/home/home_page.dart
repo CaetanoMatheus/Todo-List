@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list/app/data/models/category.dart';
 
+import 'package:todo_list/app/data/models/category.dart';
 import 'package:todo_list/app/data/models/todo.dart';
 import 'package:todo_list/app/presentation/widgets/card/card_with_color_line/card_with_color_line.dart';
 import 'package:todo_list/app/presentation/widgets/card/checkbox_card/checkbox_card.dart';
@@ -17,7 +17,7 @@ import 'package:todo_list/router/routes.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<HomePageProvider>(context, listen: false);
+    final provider = Provider.of<HomePageProvider>(context);
 
     return FutureBuilder(
       future: provider(),
@@ -27,9 +27,20 @@ class HomePage extends StatelessWidget {
           floatingActionButton: HomeFloatingActionButton(),
           body: ListView(
             children: [
-              Label('CATEGORIES'),
-              Label('YOUR TASKS'),
+              Padding(
+                padding: EdgeInsets.only(left: TLTheme.padding),
+                child: Label('CATEGORIES'),
+              ),
+              Container(
+                height: 190,
+                child: this._buildCategoriesList(context, provider),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: TLTheme.padding, bottom: 10),
+                child: Label('YOUR TASKS'),
+              ),
               this._buildTodosList(context, provider),
+              SizedBox(height: 30),
             ],
           ),
         );
@@ -37,24 +48,33 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // Widget _buildCategoriesList(BuildContext context, HomePageProvider provider) {
-  //   return ListView.builder(
-  //     physics: TLTheme.physics,
-  //     scrollDirection: Axis.horizontal,
-  //     itemCount: provider.categories.length,
-  //     itemBuilder: (_, int index) {
-  //       return _buildCategoryItem(context, provider.categories[index]);
-  //     },
-  //   );
-  // }
+  Widget _buildCategoriesList(BuildContext context, HomePageProvider provider) {
+    return ListView.builder(
+      physics: TLTheme.physics,
+      scrollDirection: Axis.horizontal,
+      itemCount: provider.categories.length,
+      itemBuilder: (_, int index) {
+        return _buildCategoryItem(
+            context, provider, provider.categories[index]);
+      },
+    );
+  }
 
-  Widget _buildCategoryItem(BuildContext context, Category category) {
+  Widget _buildCategoryItem(
+      BuildContext context, HomePageProvider provider, Category category) {
     return CardWithColorLine(
       alignment: Alignment.topCenter,
-      margin: EdgeInsets.only(left: TLTheme.padding),
-      label: '40 tasks',
+      margin: EdgeInsets.only(left: TLTheme.padding, top: 15),
+      label: '${provider.remainigTodos[category.id]} tasks',
       title: category.name,
       color: ColorsHex.color(category.color),
+      onLongPress: () => showDialog(
+        context: context,
+        builder: (_) => DeleteAlertDialog(
+          itemName: 'category',
+          onConfirm: () => provider.deleteCategory(category),
+        ),
+      ),
       onTap: () {
         Navigator.of(context).pushNamed(
           Routes.category,
@@ -95,6 +115,7 @@ class HomePage extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
         title: todo.title,
         checked: todo.done,
+        color: ColorsHex.color(todo.category.color),
         onTap: () => Navigator.pushNamed(
           context,
           Routes.todo,
