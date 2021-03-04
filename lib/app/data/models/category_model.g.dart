@@ -1,24 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'category.dart';
+part of 'category_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Category _$CategoryFromJson(Map<String, dynamic> json) {
-  return Category(
+CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) {
+  return CategoryModel(
     json['id'] as int,
     json['name'] as String,
     json['color'] as String,
     (json['todos'] as List)
-        ?.map(
-            (e) => e == null ? null : Todo.fromJson(e as Map<String, dynamic>))
+        ?.map((e) =>
+            e == null ? null : TodoModel.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }
 
-Map<String, dynamic> _$CategoryToJson(Category instance) => <String, dynamic>{
+Map<String, dynamic> _$CategoryModelToJson(CategoryModel instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'color': instance.color,

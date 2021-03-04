@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:todo_list/app/data/models/category.dart';
-import 'package:todo_list/app/data/models/todo.dart';
+import 'package:todo_list/app/data/models/category_model.dart';
+import 'package:todo_list/app/data/models/todo_model.dart';
 import 'package:todo_list/app/domain/repositories/i_category_repository.dart';
 import 'package:todo_list/app/domain/repositories/i_todo_repository.dart';
+import 'package:todo_list/app/presentation/providers/theme_provider.dart';
 import 'package:todo_list/external/sqflite/database_service.dart';
 import 'package:todo_list/todo_list.dart';
 import 'package:todo_list/injection_container.dart' as ic;
@@ -46,5 +48,9 @@ void main() async {
   // final todos = await todoRepository.all();
   // print('<${todos.length}> => $todos');
 
-  runApp(MultiProvider(providers: ic.providers, child: TodoList()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider<ThemeProvider>(create: (_) {
+      return ThemeProvider.instance(ic.get<SharedPreferences>());
+    })
+  ], child: TodoList()));
 }

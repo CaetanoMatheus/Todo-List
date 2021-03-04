@@ -1,37 +1,45 @@
-import 'package:flutter/cupertino.dart';
-import 'package:todo_list/app/data/models/category.dart';
+import 'dart:async';
 
-import 'package:todo_list/app/data/models/todo.dart';
+import 'package:todo_list/app/domain/entities/category.dart';
+import 'package:todo_list/app/domain/entities/todo.dart';
 import 'package:todo_list/app/domain/repositories/i_category_repository.dart';
 import 'package:todo_list/app/domain/repositories/i_todo_repository.dart';
 
-class HomePageProvider extends ChangeNotifier {
+class HomePageBloc {
+  // ignore: close_sinks
+  final StreamController _streamController = StreamController();
+  Sink get input => _streamController.sink;
+  Stream get output => _streamController.stream;
+
   ICategoryRepository categoryRepository;
   ITodoRepository todoRepository;
   Map<int, int> remainigTodos = {};
   List<Category> categories = [];
   List<Todo> todos = [];
 
-  HomePageProvider(this.categoryRepository, this.todoRepository);
+  HomePageBloc(this.categoryRepository, this.todoRepository);
 
   Future<void> call() async {
     await this.getCategories();
     await this.getTodos();
-    this.fillRemainigTodos();
   }
 
   Future<void> getCategories() async {
     this.categories = await this.categoryRepository.all();
+    this.updateScreen(this.categories);
   }
 
   Future<void> getTodos() async {
     this.todos = await this.todoRepository.all();
+    this.updateScreen(this.todos);
+    this.fillRemainigTodos();
   }
 
   void fillRemainigTodos() {
     this.categories.forEach((category) {
       this.remainigTodos[category.id] = this.calculateRemainigTodos(category);
     });
+    this.updateScreen(this.remainigTodos);
   }
 
   int calculateRemainigTodos(Category category) {
@@ -44,19 +52,23 @@ class HomePageProvider extends ChangeNotifier {
 
   Future<void> toggleTodoCheck(Todo todo) async {
     todo.done = !todo.done;
+    this.updateScreen(todo);
     await this.todoRepository.update(todo);
-    this.notifyListeners();
   }
 
   Future<void> deleteCategory(Category category) async {
     await this.categoryRepository.delete(category.id);
     this.categories.remove(category);
-    this.notifyListeners();
+    this.getTodos();
+    this.updateScreen(this.categories);
   }
 
   Future<void> deleteTodo(Todo todo) async {
     this.todos.remove(todo);
     await this.todoRepository.delete(todo.id);
-    this.notifyListeners();
+    this.updateScreen(this.todos);
+    this.fillRemainigTodos();
   }
+
+  void updateScreen(data) => this.input.add(data);
 }

@@ -1,5 +1,5 @@
 import 'package:todo_list/app/data/datasources/contracts/i_todo_data_source.dart';
-import 'package:todo_list/app/data/models/todo.dart';
+import 'package:todo_list/app/domain/entities/todo.dart';
 import 'package:todo_list/app/domain/repositories/i_category_repository.dart';
 import 'package:todo_list/app/domain/repositories/i_todo_repository.dart';
 

@@ -1,6 +1,7 @@
 import 'package:todo_list/app/data/datasources/contracts/i_category_data_source.dart';
-import 'package:todo_list/app/data/models/category.dart';
-import 'package:todo_list/app/data/models/todo.dart';
+import 'package:todo_list/app/data/models/category_model.dart';
+import 'package:todo_list/app/domain/entities/category.dart';
+import 'package:todo_list/app/domain/entities/todo.dart';
 import 'package:todo_list/app/domain/repositories/i_category_repository.dart';
 
 class CategoryRepository implements ICategoryRepository {
@@ -18,7 +19,7 @@ class CategoryRepository implements ICategoryRepository {
 
   @override
   Future<Category> create(Category category) {
-    return this._datasource.create(category);
+    return this._datasource.create(CategoryModel.fromParent(category));
   }
 
   @override

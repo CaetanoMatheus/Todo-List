@@ -1,9 +1,5 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:todo_list/app/data/models/category.dart';
+import 'package:todo_list/app/domain/entities/category.dart';
 
-part 'todo.g.dart';
-
-@JsonSerializable()
 class Todo {
   int _id;
   String _title;
@@ -17,10 +13,6 @@ class Todo {
     this.category = category;
   }
 
-  factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
-
-  Map<String, dynamic> toJson() => _$TodoToJson(this);
-
   int get id => this._id;
   String get title => this._title;
   bool get done => this._done;
@@ -31,6 +23,6 @@ class Todo {
   set done(bool done) => this._done = done ?? false;
   set category(Category category) {
     this._category = category;
-    category?.addTodo(this);
+    this._category?.addTodo(this);
   }
 }

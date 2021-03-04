@@ -1,6 +1,6 @@
 import 'package:todo_list/app/data/datasources/contracts/i_category_data_source.dart';
-import 'package:todo_list/app/data/models/category.dart';
-import 'package:todo_list/app/data/models/todo.dart';
+import 'package:todo_list/app/data/models/category_model.dart';
+import 'package:todo_list/app/data/models/todo_model.dart';
 import 'package:todo_list/external/sqflite/query_service.dart';
 
 class CategoryDataSource implements ICategoryDataSource {
@@ -14,21 +14,21 @@ class CategoryDataSource implements ICategoryDataSource {
   }
 
   @override
-  Future<List<Category>> all() async {
+  Future<List<CategoryModel>> all() async {
     final categoriesMaps = await this._service.all(this._tableName);
     return categoriesMaps
-        .map((Map category) => Category.fromJson(category))
+        .map((Map category) => CategoryModel.fromJson(category))
         .toList();
   }
 
   @override
-  Future<Category> find(int id) async {
+  Future<CategoryModel> find(int id) async {
     final category = await this._service.find(this._tableName, id);
-    return Category.fromJson(category);
+    return CategoryModel.fromJson(category);
   }
 
   @override
-  Future<Category> create(Category category) async {
+  Future<CategoryModel> create(CategoryModel category) async {
     category.id = await this._service.create(
           this._tableName,
           this._removeFieldsToPersist(category),
@@ -37,7 +37,7 @@ class CategoryDataSource implements ICategoryDataSource {
   }
 
   @override
-  Future<bool> update(Category category) async {
+  Future<bool> update(CategoryModel category) async {
     final result = await this._service.update(
           this._tableName,
           this._removeFieldsToPersist(category),
@@ -52,14 +52,14 @@ class CategoryDataSource implements ICategoryDataSource {
     return result;
   }
 
-  Map<String, dynamic> _removeFieldsToPersist(Category category) {
+  Map<String, dynamic> _removeFieldsToPersist(CategoryModel category) {
     final map = category.toJson();
     this._removeOnPersist.forEach((String key) => map.remove(key));
     return map;
   }
 
   @override
-  Future<Category> findByTodo(Todo todo) async {
+  Future<CategoryModel> findByTodo(TodoModel todo) async {
     final categoryMaps = await this._service.rawQuery(
       '''
         SELECT * FROM categories WHERE id = (SELECT category_id FROM todos WHERE id = ?)
@@ -68,6 +68,6 @@ class CategoryDataSource implements ICategoryDataSource {
     );
 
     if (categoryMaps.isEmpty) return null;
-    return Category.fromJson(categoryMaps.first);
+    return CategoryModel.fromJson(categoryMaps.first);
   }
 }

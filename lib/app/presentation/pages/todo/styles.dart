@@ -10,7 +10,33 @@ mixin TodoPageStyles {
       top: screenSize.height * .12,
       left: TLTheme.padding,
       right: TLTheme.padding,
-      bottom: screenSize.height * .09,
+      bottom: screenSize.height * .06,
+    );
+  }
+
+  EdgeInsets labelContainerPadding() {
+    return EdgeInsets.symmetric(vertical: 15, horizontal: TLTheme.padding);
+  }
+
+  BoxDecoration colorDisplayDecoration(Color color) {
+    return BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(TLTheme.radius)),
+      color: color,
+      boxShadow: [
+        BoxShadow(
+          color: color.withOpacity(.4),
+          spreadRadius: 2,
+          blurRadius: 10,
+        ),
+      ],
+    );
+  }
+
+  EdgeInsets colorDisplayMargin() {
+    return EdgeInsets.only(
+      left: TLTheme.padding,
+      right: TLTheme.padding,
+      bottom: 15,
     );
   }
 

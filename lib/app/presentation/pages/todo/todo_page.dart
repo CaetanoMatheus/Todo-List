@@ -1,34 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:todo_list/app/presentation/bloc/todo_page/todo_page_bloc.dart';
 
-import 'package:todo_list/app/presentation/providers/pages/todo_page_provider.dart';
 import 'package:todo_list/app/presentation/pages/todo/styles.dart';
-import 'package:todo_list/app/presentation/pages/todo/widgets/app_bar/app_bar.dart';
+import 'package:todo_list/app/presentation/pages/todo/widgets/todo_bar/todo_bar.dart';
 import 'package:todo_list/app/presentation/widgets/button/glowing_button/glowing_button.dart';
 import 'package:todo_list/app/presentation/widgets/input/input/input.dart';
+import 'package:todo_list/injection_container.dart' as ic;
 
 class TodoPage extends StatelessWidget with TodoPageStyles {
   final int todoId;
+  final int categoryId;
+  final controller = ic.get<TodoPageBloc>();
 
-  TodoPage({Key key, this.todoId}) : super(key: key);
+  TodoPage({Key key, this.todoId, this.categoryId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TodoPageProvider>(context);
-
     return FutureBuilder(
-      future: provider(todoId),
-      builder: (_, AsyncSnapshot<void> snapshot) {
-        return snapshot.connectionState == ConnectionState.done
-            ? buildScaffold(context, provider)
-            : Center(child: CircularProgressIndicator());
+      future: controller(todoId, categoryId),
+      builder: (_, snapshot) {
+        return snapshot.connectionState != ConnectionState.done
+            ? Scaffold(body: Center(child: CircularProgressIndicator()))
+            : buildPage(context);
       },
     );
   }
 
-  Widget buildScaffold(BuildContext context, TodoPageProvider provider) {
+  Widget buildPage(BuildContext context) {
     return Scaffold(
-      appBar: TodoAppBar(),
+      appBar: TodoAppBar(controller: controller),
       body: Column(
         children: [
           Expanded(
@@ -37,12 +37,12 @@ class TodoPage extends StatelessWidget with TodoPageStyles {
                 Container(
                   padding: inputContainerPadding(context),
                   child: Form(
-                    key: provider.formKey,
+                    key: controller.formKey,
                     child: Input(
                       hint: 'Enter the task title',
-                      initialValue: provider.todo.title,
-                      validator: provider.validateInput,
-                      onSaved: (value) => provider.todo.title = value,
+                      initialValue: controller.todo?.title,
+                      validator: controller.validateInput,
+                      onSaved: (value) => controller.todo.title = value,
                     ),
                   ),
                 ),
@@ -55,12 +55,12 @@ class TodoPage extends StatelessWidget with TodoPageStyles {
               height: 70,
               margin: glowingButtonMargin(),
               child: Text(
-                provider.pageAction == PageAction.create
+                controller.pageAction == TodoPageAction.create
                     ? 'Create Task'
                     : 'Update Task',
                 style: glowingButtonMarginTextStyle(),
               ),
-              onTap: () => provider.handleTodo(context),
+              onTap: () => controller.handleTodo(context),
             ),
           ),
         ],
